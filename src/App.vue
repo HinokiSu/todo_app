@@ -1,21 +1,90 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <main>
+    <div class="container">
+      <!-- 标题 -->
+      <div class="top-title">
+        <h3>Welcome, Todo App!</h3>
+      </div>
+      <!-- 输入框 -->
+      <!-- ref所定义的属性，在模板中自动解析出value -->
+      <todo-add :tid="todos.length" @add-todo="addTodo" />
+      <!-- 过滤标签 -->
+      <todo-filter
+        :selected="currFilterTab"
+        @change-filterTab="currFilterTab = $event"
+      />
+      <!-- 事务列表 -->
+      <todo-list :todos="filteredTodos" />
+    </div>
+  </main>
 </template>
 
+<script lang="ts" name="App">
+
+import { defineComponent } from 'vue'
+import TodoAdd from './components/TodoAdd.vue'
+import TodoFilter from './components/TodoFilter.vue'
+import TodoList from './components/TodoList.vue'
+// 导入抽离的方法
+import useTodos from './composables/useTodos'
+import useFilteredTodos from './composables/useFilteredTodos'
+export default defineComponent({
+  components: { TodoAdd, TodoFilter, TodoList },
+  setup() {
+    // 解构 抽离的方法的返回值
+    const { todos, addTodo } = useTodos()
+    // 过滤todos
+    const { filteredTodos, currFilterTab } = useFilteredTodos(todos)
+
+    return {
+      todos,
+      addTodo,
+      currFilterTab,
+      filteredTodos,
+    }
+  },
+})
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 整个页面 */
+main {
+  /* 撑满整个屏幕 */
+  width: 100vw;
+  min-height: 100vh;
+  /* 使用grid布局 */
+  display: grid;
+  /* 纵横轴对齐 */
+  align-items: center;
+  justify-items: center;
+  background-color: #d8dff5;
+}
+
+/* 主容器 */
+.container {
+  width: 60%;
+  max-width: 400px;
+  /* 设置box阴影 */
+  box-shadow: 6px 0px 16px rgb(90, 88, 88);
+  /* 边框倒角 */
+  border-radius: 24px;
+
+  padding: 50px 30px;
+  background-color: #fff;
+}
+
+/* 标题 */
+.top-title {
+  margin: 24px 0;
+  font-size: 28px;
+  color: rgb(210, 174, 243);
 }
 </style>
