@@ -1,12 +1,16 @@
-const data = [
-  { id: 1, content: 'eat', completed: false },
-  { id: 2, content: 'walk', completed: false },
-]
+// use mongoose
+const TodosModel = require('../model/todos')
 
 module.exports = function (app) {
   // 请求列表
   app.get('/todo', (req, res) => {
-    res.send({ todos: data })
+    TodosModel.find({}, (err, data) => {
+      if (err) {
+        console.log('Mongoose: Unable to find to the DB!')
+      } else {
+        res.send(data)
+      }
+    })
   })
 
   // 新增todo item

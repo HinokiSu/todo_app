@@ -8,23 +8,21 @@ export default function useTodos() {
   // 添加 todo触发
   const addTodo = (todo: any) => {
     const res = submitTodo()
-
   }
 
   // 获取todos list
-  const getTodoList = async() => {
+  const getTodoList = async () => {
     const res = await getTodos()
-    
-    if(!res) {
+
+    if (!res) {
       console.log('获取todos失败!')
-      return 
+      return
     }
     todos.value = res
   }
 
   // 使用生命周期函数 onMounted
   onMounted(() => {
-    // fetchTodos()
     getTodoList()
   })
 
