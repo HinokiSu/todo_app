@@ -13,7 +13,6 @@
 import { defineComponent } from 'vue'
 import TodoListItem from './TodoListItem.vue'
 export default defineComponent({
-  name: 'TodoList',
   components: { TodoListItem },
   props: ['todos'],
   setup() {
