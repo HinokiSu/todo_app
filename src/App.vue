@@ -7,7 +7,7 @@
       </div>
       <!-- 输入框 -->
       <!-- ref所定义的属性，在模板中自动解析出value -->
-      <todo-add :tid="todos.length" @add-todo="addTodo" />
+      <todo-add @add-todo="addTodo" />
       <!-- 过滤标签 -->
       <todo-filter
         :selected="currFilterTab"

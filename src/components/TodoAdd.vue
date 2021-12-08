@@ -11,21 +11,20 @@
 <script lang="ts" name="TodoAdd">
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
-  props: ['tid', 'add-todo'],
+  props: ['add-todo'],
   // props是 父组件传递过来的
   setup(props, { emit }) {
-    return useEmitAddTodo(props.tid, emit)
+    return useEmitAddTodo(emit)
   },
 })
 
 // 抽离专属的composables
-function useEmitAddTodo(tid: Number, emit: any) {
+function useEmitAddTodo(emit: any) {
   const todoContent = ref('')
   // 输入框enter事件
   const emitAddTodo = () => {
     // 定义todo对象
     const todo = {
-      id: tid,
       content: todoContent.value,
       // 是否完成
       completed: false,

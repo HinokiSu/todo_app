@@ -1,8 +1,10 @@
 import request from '@/utils/request'
 
 // 提交
-const submitTodo: any = () => {
+const submitTodo: any = async () => {
+  const retData = await request.http.post('/todo', {
 
+  })
 }
 
 // 获取todos
@@ -12,6 +14,7 @@ const getTodos = async () => {
     console.log('[axios]>> 获取todos 失败!')
     return null
   }
+  console.log(retData.data)
   return retData.data
 }
 

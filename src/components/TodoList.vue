@@ -2,7 +2,7 @@
   <div class="todo-list">
     <TodoListItem
       v-for="todo in todos"
-      :key="todo.id"
+      :key="todo._id"
       :todoItem="todo"
       @change-state="todo.completed = $event.target.checked"
     />
