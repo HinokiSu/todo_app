@@ -16,7 +16,15 @@ module.exports = function (app) {
   // 新增todo item
   app.post('/todo', (req, res) => {
     let body = req.body
-    res.send(body)
+    const todosInstance = new TodosModel(body)
+    todosInstance.save((err) => {
+      if (err) {
+        console.log('Mongoose: Unable to save to the DB!')
+        throw err
+      } else {
+        res.send(body)
+      }
+    })
   })
 
   // 删除todo
