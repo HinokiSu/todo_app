@@ -29,7 +29,6 @@ module.exports = function (app) {
 
   // 删除todo
   app.delete('/todo', (req, res) => {
-
     TodosModel.findOneAndRemove(req.body, (err, data) => {
       if (err) {
         console.log('Mongoose: Unable to remove the data from DB!')
@@ -40,9 +39,19 @@ module.exports = function (app) {
   })
 
   // 修改todo completed
-  app.post('/todo', (req, res) => {
-    
+  app.put('/todo', (req, res) => {
+    let modifVal = req.body.data
+    console.log(modifVal)
+    TodosModel.findByIdAndUpdate(
+      modifVal.id,
+      { completed: modifVal.completed },
+      (err, data) => {
+        if (err) {
+          console.log('Mongoose: Unable to modify the data from DB!')
+        } else {
+          res.send(data)
+        }
+      }
+    )
   })
-
-
 }

@@ -6,6 +6,7 @@
       :todoItem="todo"
       @change-state="todo.completed = $event.target.checked"
       :removeTodo="emitRemove"
+      :modifyTodo="emitModify"
     />
   </div>
 </template>
@@ -17,13 +18,19 @@ import TodoListItem from './TodoListItem.vue'
 export default defineComponent({
   components: { TodoListItem },
   props: ['todos'],
-  emits: ['remove-todo'],
+  emits: ['remove-todo', 'modify-todo'],
   setup(props, { emit }) {
     const emitRemove = (id: any) => {
       emit('remove-todo', id)
     }
+
+    const emitModify = (e:any, todo:any) => {
+      todo.completed = e.target.checked
+      emit('modify-todo', todo)
+    }
     return {
       emitRemove,
+      emitModify
     }
   },
 })

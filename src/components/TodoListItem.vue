@@ -6,7 +6,8 @@
       <input
         type="checkbox"
         :checked="todoItem.completed"
-        @click="$emit('change-state', $event)"
+        @click="modifyTodo($event, todoItem)"
+        
       />
       {{ todoItem.content }}
       <span class="check-button"></span>
@@ -24,7 +25,7 @@
 <script lang="ts" name="TodoListItem">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  props: ['todoItem', 'removeTodo'],
+  props: ['todoItem', 'removeTodo', 'modifyTodo'],
   setup() {
     return {}
   },

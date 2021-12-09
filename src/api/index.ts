@@ -34,4 +34,19 @@ const deleteTodo = async (id: any) => {
   return 'success'
 }
 
-export { submitTodo, getTodos, deleteTodo }
+// 修改 todo completed
+const updateTodo = async (todo: any) => {
+  const retData = await request.http.put('/todo', {
+    data: {
+      todo
+    },
+  })
+
+  if (retData.status !== 200) {
+    console.log('[axios]>> 修改todo 失败!')
+    return null
+  }
+  return 'success'
+}
+
+export { submitTodo, getTodos, deleteTodo, updateTodo }

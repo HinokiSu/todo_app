@@ -1,11 +1,12 @@
 import { onMounted, ref } from 'vue'
-import { submitTodo, getTodos, deleteTodo } from '@/api/index'
+import { submitTodo, getTodos, deleteTodo, updateTodo } from '@/api/index'
 
 interface todo {
   _id: string
   content: string
   completed: boolean
 }
+
 
 /* 添加todo */
 export default function useTodos() {
@@ -35,7 +36,13 @@ export default function useTodos() {
     getTodoList()
   }
 
-  // 使用生命周期函数 onMounted
+  // 修改 todo
+  const modifyTodo = async (todo:any) => {
+    const res = await updateTodo(todo)
+    console.log(res)
+  }
+
+
   onMounted(() => {
     getTodoList()
   })
@@ -44,5 +51,6 @@ export default function useTodos() {
     todos,
     addTodo,
     removeTodoItem,
+    modifyTodo
   }
 }
