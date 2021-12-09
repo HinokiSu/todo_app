@@ -28,5 +28,21 @@ module.exports = function (app) {
   })
 
   // 删除todo
-  app.delete('/todo', (req, res) => {})
+  app.delete('/todo', (req, res) => {
+
+    TodosModel.findOneAndRemove(req.body, (err, data) => {
+      if (err) {
+        console.log('Mongoose: Unable to remove the data from DB!')
+      } else {
+        res.send(data)
+      }
+    })
+  })
+
+  // 修改todo completed
+  app.post('/todo', (req, res) => {
+    
+  })
+
+
 }

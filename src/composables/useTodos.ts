@@ -1,25 +1,38 @@
-import { ref, onMounted } from 'vue'
-import { submitTodo, getTodos } from '@/api/index'
-import axios from 'axios'
+import { onMounted, ref } from 'vue'
+import { submitTodo, getTodos, deleteTodo } from '@/api/index'
+
+interface todo {
+  _id: string
+  content: string
+  completed: boolean
+}
+
 /* 添加todo */
 export default function useTodos() {
-  // ref 需要 .value取到该值
-  const todos = ref<any>([])
-  // 添加 todo触发
-  const addTodo = async (todo: any) => {
-    const res = await submitTodo(todo)
-    if(!res) console.log('添加todo失败')
-  }
+  const todos = ref([])
 
-  // 获取todos list
+  // 获取todos
   const getTodoList = async () => {
     const res = await getTodos()
+    todos.value = res.map((todo: todo) => ({
+      id: todo._id,
+      content: todo.content,
+      completed: todo.completed,
+    }))
+  }
 
-    if (!res) {
-      console.log('获取todos失败!')
-      return
-    }
-    todos.value = res
+  // 删除todo
+  const removeTodoItem = async (id: any) => {
+    await deleteTodo(id)
+    todos.value = await getTodos()
+  }
+
+  // 添加todo
+  const addTodo = async (todo: any) => {
+    const res = await submitTodo(todo)
+    if (!res) console.log('添加todo失败')
+    // 重新获取
+    getTodoList()
   }
 
   // 使用生命周期函数 onMounted
@@ -30,5 +43,6 @@ export default function useTodos() {
   return {
     todos,
     addTodo,
+    removeTodoItem,
   }
 }

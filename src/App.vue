@@ -14,33 +14,32 @@
         @change-filterTab="currFilterTab = $event"
       />
       <!-- 事务列表 -->
-      <todo-list :todos="filteredTodos" />
+      <todo-list :todos="filteredTodos" @remove-todo="removeTodoItem" />
     </div>
   </main>
 </template>
 
 <script lang="ts" name="App">
-
 import { defineComponent } from 'vue'
-import TodoAdd from './components/TodoAdd.vue'
-import TodoFilter from './components/TodoFilter.vue'
-import TodoList from './components/TodoList.vue'
+import TodoAdd from '@/components/TodoAdd.vue'
+import TodoFilter from '@/components/TodoFilter.vue'
+import TodoList from '@/components/TodoList.vue'
 // 导入抽离的方法
-import useTodos from './composables/useTodos'
-import useFilteredTodos from './composables/useFilteredTodos'
+import useTodos from '@/composables/useTodos'
+import useFilteredTodos from '@/composables/useFilteredTodos'
 export default defineComponent({
   components: { TodoAdd, TodoFilter, TodoList },
   setup() {
     // 解构 抽离的方法的返回值
-    const { todos, addTodo } = useTodos()
+    const { todos, addTodo, removeTodoItem } = useTodos()
     // 过滤todos
     const { filteredTodos, currFilterTab } = useFilteredTodos(todos)
 
     return {
-      todos,
       addTodo,
       currFilterTab,
       filteredTodos,
+      removeTodoItem,
     }
   },
 })

@@ -5,4 +5,7 @@ import App from './App.vue'
 import request from '@/utils/request'
 
 
-createApp(App).use(request).mount('#app')
+const app = createApp(App)
+
+app.use(request)
+app.mount('#app')

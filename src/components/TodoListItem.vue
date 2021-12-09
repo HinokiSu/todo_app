@@ -11,14 +11,20 @@
       {{ todoItem.content }}
       <span class="check-button"></span>
     </label>
+    <div class="todo-remove-wrapper">
+      <div class="remove-wrapper">
+        <button class="remove-btn" @click="removeTodo(todoItem._id)">
+          Delete
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" name="TodoListItem">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'TodoListItem',
-  props: ['todoItem'],
+  props: ['todoItem', 'removeTodo'],
   setup() {
     return {}
   },
@@ -32,6 +38,8 @@ export default defineComponent({
   box-shadow: 8px 4px 10px rgb(203, 204, 206);
   border-radius: 10px;
   background-color: rgba(232, 207, 252, 0.404);
+  display: flex;
+  justify-content: space-between;
 }
 
 /* 默认单选框 */
@@ -89,5 +97,16 @@ export default defineComponent({
 
 .todo-item input:checked + span.check-button::after {
   opacity: 1;
+}
+
+.remove-btn {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(81, 48, 228, 0.842);
+  padding: 3px 8px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(243, 240, 252, 0.781);
+  background-color: rgba(186, 131, 238, 0.267);
+  cursor: pointer;
 }
 </style>

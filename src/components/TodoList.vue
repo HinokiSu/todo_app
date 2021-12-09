@@ -5,6 +5,7 @@
       :key="todo._id"
       :todoItem="todo"
       @change-state="todo.completed = $event.target.checked"
+      :removeTodo="emitRemove"
     />
   </div>
 </template>
@@ -12,11 +13,18 @@
 <script lang="ts" name="TodoList">
 import { defineComponent } from 'vue'
 import TodoListItem from './TodoListItem.vue'
+
 export default defineComponent({
   components: { TodoListItem },
   props: ['todos'],
-  setup() {
-    return {}
+  emits: ['remove-todo'],
+  setup(props, { emit }) {
+    const emitRemove = (id: any) => {
+      emit('remove-todo', id)
+    }
+    return {
+      emitRemove,
+    }
   },
 })
 </script>
