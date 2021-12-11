@@ -101,6 +101,7 @@ export default defineComponent({
 }
 
 .remove-btn {
+  border: unset;
   font-size: 14px;
   font-weight: 400;
   color: rgba(81, 48, 228, 0.842);
