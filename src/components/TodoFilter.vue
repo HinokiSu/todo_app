@@ -13,10 +13,11 @@
   </div>
 </template>
 
-<script lang="ts" name="TodoFilter">
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  name: 'TodoFilter',
   props: ['selected'],
   setup() {
     const filterTabs = [

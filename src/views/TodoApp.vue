@@ -19,7 +19,7 @@
   </main>
 </template>
 
-<script lang="ts" name="TodoApp">
+<script lang="ts" >
 import { defineComponent } from 'vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoFilter from '@/components/TodoFilter.vue'
@@ -29,6 +29,7 @@ import useTodos from '@/composables/useTodos'
 import useFilteredTodos from '@/composables/useFilteredTodos'
 
 export default defineComponent({
+  name: "TodoApp",
   components: { TodoAdd, TodoFilter, TodoList },
   setup() {
     // 解构 抽离的方法的返回值

@@ -11,11 +11,12 @@
   </div>
 </template>
 
-<script lang="ts" name="TodoList">
+<script lang="ts">
 import { defineComponent } from 'vue'
 import TodoListItem from './TodoListItem.vue'
 
 export default defineComponent({
+  name: 'TodoList',
   components: { TodoListItem },
   props: ['todos'],
   emits: ['remove-todo', 'modify-todo'],
@@ -24,13 +25,13 @@ export default defineComponent({
       emit('remove-todo', id)
     }
 
-    const emitModify = (e:any, todo:any) => {
+    const emitModify = (e: any, todo: any) => {
       todo.completed = e.target.checked
       emit('modify-todo', todo)
     }
     return {
       emitRemove,
-      emitModify
+      emitModify,
     }
   },
 })

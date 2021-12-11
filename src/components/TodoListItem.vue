@@ -22,9 +22,10 @@
   </div>
 </template>
 
-<script lang="ts" name="TodoListItem">
+<script lang="ts" >
 import { defineComponent } from 'vue'
 export default defineComponent({
+  name: "TodoListItem",
   props: ['todoItem', 'removeTodo', 'modifyTodo'],
   setup() {
     return {}

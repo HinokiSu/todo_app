@@ -6,6 +6,7 @@
 import { defineComponent } from 'vue'
 import TodoApp from '@/views/TodoApp.vue'
 export default defineComponent({
+  name: 'App',
   components: {
     TodoApp,
   },

@@ -8,9 +8,10 @@
   </div>
 </template>
 
-<script lang="ts" name="TodoAdd">
+<script lang="ts">
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
+  name: 'TodoAdd',
   props: ['add-todo'],
   // props是 父组件传递过来的
   setup(props, { emit }) {
