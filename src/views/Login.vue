@@ -1,28 +1,40 @@
 <template>
-<div>
-  <LoginInput v-model="username" />
-</div>
-
+  <div>
+     <LoginInput
+      size="small"
+      placeholder="place input username"
+      v-model="username"
+    />
+    <LoginInput
+      size="small"
+      placeholder="place input password"
+      v-model="password"
+    />
+  </div>
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, watchEffect } from 'vue'
 import LoginInput from '@/components/LoginInput.vue'
-import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'Login',
   components: {
-    LoginInput
+    LoginInput,
   },
-  setup () {
-    const username = ref<string>('')
+  setup() {
+    let username = ref('')
+    let password = ref('')
+    watchEffect(() => {
+      console.log(username.value)
+      console.log(password.value)
+    })
     return {
-      username
+      username,
+      password
     }
-  }
+  },
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
