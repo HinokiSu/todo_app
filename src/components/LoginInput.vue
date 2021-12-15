@@ -1,21 +1,32 @@
 <template>
-  <div class="cus-input-wrapper">
-    <input
-      type="text"
-      :class="classes"
-      :placeholder="placeholder"
-      @keyup.enter="OnEnter"
-      @input="changeValue"
-      :value="modelValue"
-    />
+  <div class="input-container">
+    <div class="input-wrapper">
+      <input-label font-size="fontSizeValue">
+        <template v-slot:content>
+          {{ prefix }}
+        </template>
+      </input-label>
+      <input
+        type="text"
+        :class="classes"
+        :placeholder="placeholder"
+        @keyup.enter="OnEnter"
+        @input="changeValue"
+        :value="modelValue"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-
+import { NormalSizes } from '@/utils/prop-types'
+import { computed, defineComponent, ref, watchEffect } from 'vue'
+import InputLabel from './LoginInputLabel.vue'
 export default defineComponent({
   name: 'LoginInput',
+  components: {
+    InputLabel,
+  },
   props: {
     modelValue: {
       type: [String, Number],
@@ -31,14 +42,46 @@ export default defineComponent({
         return ['small', 'medium', 'large'].indexOf(value) !== -1
       },
     },
+    prefix: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['enter', 'update:modelValue'],
   setup(props: any, { emit }) {
+    const fontSizeValue = ref<string>()
+
     function changeValue(e: any) {
       emit('update:modelValue', e.target.value)
     }
+
+    type InputSize = {
+      fontSize: string
+    }
+    const queryInputSize = (size: NormalSizes) => {
+      const sizesPool: Record<NormalSizes, InputSize> = {
+        small: {
+          fontSize: '12px',
+        },
+        medium: {
+          fontSize: '14px',
+        },
+        large: {
+          fontSize: '16px',
+        },
+      }
+      // 索引签名获取
+      return sizesPool[size]
+    }
+
+    watchEffect(() => {
+      const { fontSize } = queryInputSize(props.size)
+      fontSizeValue.value = fontSize
+    })
+
     return {
       changeValue,
+      fontSizeValue,
       classes: computed(() => ({
         'cus-input': true,
         [`cus-input--${props.size || 'medium'}`]: true,
@@ -52,13 +95,40 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.input-container {
+  display: inline-flex;
+    align-items: center;
+    width: inherit;
+    height: calc(2.5 * 16pt);
+}
+.input-wrapper {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  height: 100%;
+  flex: 1;
+  user-select: none;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  transition: border 0.2s ease 0s, color 0.2s ease 0s;
+  padding: 0;
+}
+.input-wrapper:hover {
+  border-color: #666666;
+}
 .cus-input {
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  border: 2em;
-  border-radius: 3em;
-  display: inline-block;
-  line-height: 1;
+  margin: 4px 10px;
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  -webkit-appearance: none;
+  color: #000;
 }
 .cus-input--small {
   font-size: 12px;
@@ -71,17 +141,5 @@ export default defineComponent({
 .cus-input--large {
   font-size: 16px;
   padding: 12px 24px;
-}
-
-.cus-input-wrapper input {
-  /* 去除边框 及 轮廓 */
-  border: none;
-  outline: none;
-  padding: 12px 50px 12px 18px;
-  border-radius: 50px;
-  box-shadow: 6px 6px 20px rgb(189, 186, 192);
-  width: 100%;
-  font-size: 16px;
-  color: black;
 }
 </style>
