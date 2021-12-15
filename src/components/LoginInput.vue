@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cus-input-wrapper">
     <input
       type="text"
       :class="classes"
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'LoginInput',
@@ -34,15 +34,14 @@ export default defineComponent({
   },
   emits: ['enter', 'update:modelValue'],
   setup(props: any, { emit }) {
-    console.log(props)
     function changeValue(e: any) {
       emit('update:modelValue', e.target.value)
     }
     return {
       changeValue,
       classes: computed(() => ({
-        'login-input': true,
-        [`login-input--${props.size || 'medium'}`]: true,
+        'cus-input': true,
+        [`cus-input--${props.size || 'medium'}`]: true,
       })),
       OnEnter() {
         emit('enter')
@@ -53,25 +52,36 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.login-input {
+.cus-input {
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   border: 2em;
   border-radius: 3em;
-  cursor: pointer;
   display: inline-block;
   line-height: 1;
 }
-.login-input--small {
+.cus-input--small {
   font-size: 12px;
   padding: 10px 16px;
 }
-.login-input--medium {
+.cus-input--medium {
   font-size: 14px;
   padding: 11px 20px;
 }
-.login-input--large {
+.cus-input--large {
   font-size: 16px;
   padding: 12px 24px;
+}
+
+.cus-input-wrapper input {
+  /* 去除边框 及 轮廓 */
+  border: none;
+  outline: none;
+  padding: 12px 50px 12px 18px;
+  border-radius: 50px;
+  box-shadow: 6px 6px 20px rgb(189, 186, 192);
+  width: 100%;
+  font-size: 16px;
+  color: black;
 }
 </style>
