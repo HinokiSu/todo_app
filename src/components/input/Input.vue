@@ -1,11 +1,13 @@
 <template>
   <div class="input-container">
     <div class="input-wrapper">
-      <input-label font-size="fontSizeValue">
+      <!-- prefix tag -->
+      <input-label :fontSize="fontSizeValue">
         <template v-slot:content>
           {{ prefix }}
         </template>
       </input-label>
+
       <input
         type="text"
         :class="classes"
@@ -13,6 +15,12 @@
         @keyup.enter="OnEnter"
         @input="changeValue"
         :value="modelValue"
+      />
+      <!-- clear icon -->
+      <input-clear-icon
+        :visible="modelValue ? true : false"
+        :disabled="disabled"
+        @click="clearHandler"
       />
     </div>
   </div>
@@ -22,10 +30,12 @@
 import { NormalSizes } from '@/utils/prop-types'
 import { computed, defineComponent, ref, watchEffect } from 'vue'
 import InputLabel from './InputLabel.vue'
+import InputClearIcon from './InputClearIcon.vue'
 export default defineComponent({
   name: 'Input',
   components: {
     InputLabel,
+    InputClearIcon,
   },
   props: {
     modelValue: {
@@ -46,8 +56,12 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ['enter', 'update:modelValue'],
+  emits: ['enter', 'update:modelValue', 'clearClick'],
   setup(props: any, { emit }) {
     const fontSizeValue = ref<string>()
 
@@ -79,9 +93,15 @@ export default defineComponent({
       fontSizeValue.value = fontSize
     })
 
+    const clearHandler = (e: Event) => {
+      changeValue(e)
+      emit('clearClick', e)
+    }
+
     return {
       changeValue,
       fontSizeValue,
+      clearHandler,
       classes: computed(() => ({
         'cus-input': true,
         [`cus-input--${props.size || 'medium'}`]: true,
@@ -95,12 +115,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .input-container {
   display: inline-flex;
-    align-items: center;
-    width: inherit;
-    height: calc(2.5 * 16pt);
+  align-items: center;
+  width: inherit;
+  height: calc(2.5 * 16pt);
 }
 .input-wrapper {
   display: inline-flex;
