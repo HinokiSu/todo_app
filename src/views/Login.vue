@@ -12,16 +12,16 @@
           </div>
           <div class="login-form">
             <div class="input-username">
-              <login-input
+              <cus-input
                 placeholder="please input username"
                 v-model="userInfo.username"
                 size="large"
-                prefix="UserName"
+                prefix="Username"
               />
             </div>
 
             <div class="input-password">
-              <login-input
+              <cus-input
                 placeholder="please input password"
                 v-model="userInfo.password"
                 size="large"
@@ -30,9 +30,8 @@
             </div>
           </div>
           <div class="login-features">
-            <login-button class="sign-in-btn" size="large" @click="SignIn"
-              >Sign in</login-button
-            >
+            <cus-button class="sign-in-btn" size="large" @click="SignIn"
+              >Sign in</cus-button>
           </div>
         </div>
       </div>
@@ -42,13 +41,13 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watchEffect } from 'vue'
-import LoginInput from '@/components/LoginInput.vue'
-import LoginButton from '@/components/LoginButton.vue'
+import CusInput from '@/components/input/Input.vue'
+import CusButton from '@/components/Button.vue'
 export default defineComponent({
   name: 'Login',
   components: {
-    LoginInput,
-    LoginButton,
+    CusInput,
+    CusButton,
   },
   setup() {
     const userInfo = reactive({

@@ -21,9 +21,9 @@
 <script lang="ts">
 import { NormalSizes } from '@/utils/prop-types'
 import { computed, defineComponent, ref, watchEffect } from 'vue'
-import InputLabel from './LoginInputLabel.vue'
+import InputLabel from './InputLabel.vue'
 export default defineComponent({
-  name: 'LoginInput',
+  name: 'Input',
   components: {
     InputLabel,
   },

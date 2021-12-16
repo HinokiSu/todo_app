@@ -8,7 +8,7 @@
 import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'LoginInputLabel',
+  name: 'InputLabel',
   props: {
     fontSize: String,
     isRight: Boolean,

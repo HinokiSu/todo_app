@@ -8,7 +8,7 @@
 import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'LoginButton',
+  name: 'Button',
   props: {
     size: {
       type: String,
