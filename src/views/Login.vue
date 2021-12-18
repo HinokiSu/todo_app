@@ -30,8 +30,9 @@
             </div>
           </div>
           <div class="login-features">
-            <cus-button class="sign-in-btn" size="large" @click="SignIn"
-              >Sign in</cus-button>
+            <cus-button class="sign-in-btn" size="large" @click="signIn"
+              >Sign in</cus-button
+            >
           </div>
         </div>
       </div>
@@ -43,6 +44,8 @@
 import { defineComponent, reactive, ref, watchEffect } from 'vue'
 import CusInput from '@/components/input/Input.vue'
 import CusButton from '@/components/Button.vue'
+
+import useUser from '@/composables/useUser'
 export default defineComponent({
   name: 'Login',
   components: {
@@ -58,13 +61,16 @@ export default defineComponent({
       // console.log(userInfo.username)
       // console.log(userInfo.password)
     })
-
-    const SignIn = () => {
-      console.log(userInfo)
+    const { verifyUser } = useUser()
+    const signIn = () => {
+      verifyUser({
+        username: userInfo.username,
+        password: userInfo.password
+      })
     }
     return {
       userInfo,
-      SignIn,
+      signIn,
     }
   },
 })

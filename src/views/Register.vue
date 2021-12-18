@@ -27,12 +27,11 @@
                 size="large"
                 prefix="Password"
               />
-              
             </div>
-            <div class="input-re-password">
+            <div class="input-re-password" :class="checkMatchBothPwd">
               <cus-input
                 placeholder="Please enter again"
-                v-model="userInfo.password"
+                v-model="userInfo.repassword"
                 size="large"
                 prefix="Password"
               />
@@ -50,9 +49,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { computed, defineComponent, reactive, ref, watchEffect } from 'vue'
 import CusInput from '@/components/input/Input.vue'
 import CusButton from '@/components/Button.vue'
+
+import useUser from '@/composables/useUser'
 export default defineComponent({
   name: 'Register',
   components: {
@@ -63,14 +64,32 @@ export default defineComponent({
     const userInfo = reactive({
       username: '',
       password: '',
+      repassword: '',
+    })
+
+    const { addUser } = useUser()
+
+    watchEffect(() => {})
+
+    const checkMatchBothPwd = computed(() => {
+      if (userInfo.repassword) {
+        if (userInfo.password !== userInfo.repassword) {
+          return 'unmatch'
+        }
+      }
+      return ''
     })
 
     const SignIn = () => {
-      console.log(userInfo)
+      addUser({
+        username: userInfo.username,
+        password: userInfo.password
+      })
     }
     return {
       userInfo,
       SignIn,
+      checkMatchBothPwd,
     }
   },
 })
@@ -158,6 +177,11 @@ main {
 
 .input-re-password {
   padding-bottom: 20px;
+}
+
+.input-re-password.unmatch .cus-input :first-child,
+.input-re-password.unmatch .cus-input :first-child:hover {
+  border-color: rgba(255, 0, 0, 0.849) !important;
 }
 
 /* .form-input {
