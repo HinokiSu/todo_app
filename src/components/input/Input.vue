@@ -1,6 +1,6 @@
 <template>
-  <div class="input-container">
-    <div class="input-wrapper">
+  <div class="cus-input">
+    <div class="cus-input-wrapper">
       <!-- prefix tag -->
       <input-label :fontSize="fontSizeValue">
         <template v-slot:content>
@@ -14,6 +14,8 @@
         :placeholder="placeholder"
         @keyup.enter="OnEnter"
         @input="changeValue"
+        @focus="focusHandler"
+        @change="changeHandler"
         :value="modelValue"
       />
       <!-- clear icon -->
@@ -61,12 +63,19 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['enter', 'update:modelValue', 'clearClick'],
+  emits: ['enter', 'focus', 'blur', 'change', 'update:modelValue', 'clearClick'],
   setup(props: any, { emit }) {
     const fontSizeValue = ref<string>()
 
-    function changeValue(e: any) {
+    const changeValue = (e: any) => {
       emit('update:modelValue', e.target.value)
+    }
+    const focusHandler = (e: Event) => {
+      emit('focus', e)
+    }
+
+    const changeHandler = (e: Event) => {
+      emit('change', e)
     }
 
     type InputSize = {
@@ -102,8 +111,10 @@ export default defineComponent({
       changeValue,
       fontSizeValue,
       clearHandler,
+      focusHandler,
+      changeHandler,
       classes: computed(() => ({
-        'cus-input': true,
+        'cus-input-main': true,
         [`cus-input--${props.size || 'medium'}`]: true,
       })),
       OnEnter() {
@@ -115,13 +126,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.input-container {
+.cus-input {
   display: inline-flex;
   align-items: center;
   width: inherit;
   height: calc(2.5 * 16pt);
 }
-.input-wrapper {
+.cus-input-wrapper {
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
@@ -133,10 +144,10 @@ export default defineComponent({
   transition: border 0.2s ease 0s, color 0.2s ease 0s;
   padding: 0;
 }
-.input-wrapper:hover {
+.cus-input-wrapper:hover {
   border-color: #666666;
 }
-.cus-input {
+.cus-input-main {
   margin: 4px 10px;
   box-shadow: none;
   background-color: transparent;
@@ -151,14 +162,14 @@ export default defineComponent({
 }
 .cus-input--small {
   font-size: 12px;
-  padding: 10px 16px;
+  padding: 10px 0;
 }
 .cus-input--medium {
   font-size: 14px;
-  padding: 11px 20px;
+  padding: 11px 0;
 }
 .cus-input--large {
   font-size: 16px;
-  padding: 12px 24px;
+  padding: 12px 0;
 }
 </style>
