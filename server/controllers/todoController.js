@@ -19,7 +19,7 @@ module.exports = function (app) {
     const todosInstance = new TodosModel(body)
     todosInstance.save((err) => {
       if (err) {
-        console.log('Mongoose: Unable to save to the DB!')
+        console.log('Mongoose: Unable to save todo to the DB!')
         throw err
       } else {
         res.send(body)
