@@ -34,17 +34,14 @@ const findUserByAll: any = async (userInfo: any) => {
       userInfo,
     },
   })
-  console.log(retData)
   if (retData.status !== 200) {
     console.log('[axios]>> 查询用用户失败!')
-    return false
+    return null
   }
-  if(retData.data) {
-    return true
-  } else {
-    return false
+  if (!retData.data) {
+    return null
   }
-  
+  return retData.data
 }
 
 export { registerUser, findUserByAll }

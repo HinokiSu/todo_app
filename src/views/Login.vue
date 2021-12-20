@@ -46,6 +46,7 @@ import CusInput from '@/components/input/Input.vue'
 import CusButton from '@/components/Button.vue'
 
 import useUser from '@/composables/useUser'
+import router from '@/routes'
 export default defineComponent({
   name: 'Login',
   components: {
@@ -62,11 +63,24 @@ export default defineComponent({
       // console.log(userInfo.password)
     })
     const { verifyUser } = useUser()
-    const signIn = () => {
-      verifyUser({
+    const signIn = async () => {
+      const auth =  await verifyUser({
         username: userInfo.username,
         password: userInfo.password
       })
+
+      if(!auth) {
+        console.log('验证未通过!')
+        return
+      }
+      // add auth
+      sessionStorage.setItem('auth', auth._id)
+      // reset userInfo
+      userInfo.username = ''
+      userInfo.password = ''
+
+      router.push({name: 'home'})
+
     }
     return {
       userInfo,

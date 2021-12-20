@@ -24,15 +24,15 @@ export default function useUser() {
   // 查询用户 by all condition
   const verifyUser = async (user: user) => {
     const res = await findUserByAll(user)
-    if(res) {
-      console.log('登录成功')
+    if (res) {
+      return res
     } else {
-      console.log('用户名或密码错误')
+      return null
     }
   }
 
   return {
     addUser,
-    verifyUser
+    verifyUser,
   }
 }
