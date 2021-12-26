@@ -8,7 +8,13 @@ module.exports = function (app) {
       if (err) {
         console.log('Mongoose: Unable to find to the DB!')
       } else {
-        res.send(data)
+        res.send({
+          data: data,
+          meta: {
+            msg: '获取成功',
+            status: 200,
+          },
+        })
       }
     })
   })
@@ -17,39 +23,59 @@ module.exports = function (app) {
   app.post('/todo', (req, res) => {
     let body = req.body
     const todosInstance = new TodosModel(body)
-    todosInstance.save((err) => {
+    todosInstance.save((err, data) => {
       if (err) {
         console.log('Mongoose: Unable to save todo to the DB!')
         throw err
       } else {
-        res.send(body)
+        console.log(data)
+        res.send({
+          data: data,
+          meta: {
+            msg: '添加成功',
+            status: 200,
+          },
+        })
       }
     })
   })
 
   // 删除todo
   app.delete('/todo', (req, res) => {
-    TodosModel.findOneAndRemove(req.body, (err, data) => {
+    TodosModel.findOneAndRemove({ '_id': req.query.id }, (err, data) => {
       if (err) {
         console.log('Mongoose: Unable to remove the data from DB!')
       } else {
-        res.send(data)
+        res.send({
+          data: data,
+          meta: {
+            msg: '删除成功',
+            status: 200,
+          },
+        })
       }
     })
   })
 
   // 修改todo completed
   app.put('/todo', (req, res) => {
-    let modifVal = req.body.data
-    console.log(modifVal)
+    const newTodo = req.body.data.todo
     TodosModel.findByIdAndUpdate(
-      modifVal.id,
-      { completed: modifVal.completed },
+      newTodo.id,
+      { $set: { completed: newTodo.completed } },
+      { new: true },
       (err, data) => {
         if (err) {
           console.log('Mongoose: Unable to modify the data from DB!')
         } else {
-          res.send(data)
+          console.log(data)
+          res.send({
+            data: data,
+            meta: {
+              msg: '更新成功',
+              status: 200,
+            },
+          })
         }
       }
     )
