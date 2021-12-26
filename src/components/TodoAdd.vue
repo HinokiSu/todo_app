@@ -24,11 +24,18 @@ function useEmitAddTodo(emit: any) {
   const todoContent = ref('')
   // 输入框enter事件
   const emitAddTodo = () => {
+    const uid = <string | null>sessionStorage.getItem('auth')
+    console.log(uid)
+    if(!uid) {
+      console.log('auth is null')
+      return 
+    }
     // 定义todo对象
     const todo = {
       content: todoContent.value,
       // 是否完成
       completed: false,
+      uid: uid
     }
     // 触发 父组件传递来的方法
     emit('add-todo', todo)

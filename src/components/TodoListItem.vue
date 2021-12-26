@@ -6,15 +6,15 @@
       <input
         type="checkbox"
         :checked="todoItem.completed"
-        @click="modifyTodo($event, todoItem)"
-        
+        @click="changeState(todoItem)"
       />
+      <!-- @change-state="todoItem.completed = $event.target.checked" -->
       {{ todoItem.content }}
       <span class="check-button"></span>
     </label>
     <div class="todo-remove-wrapper">
       <div class="remove-wrapper">
-        <button class="remove-btn" @click="removeTodo(todoItem._id)">
+        <button class="remove-btn" @click="clearTodoItem(todoItem.id)">
           Delete
         </button>
       </div>
@@ -22,13 +22,33 @@
   </div>
 </template>
 
-<script lang="ts" >
+<script lang="ts">
 import { defineComponent } from 'vue'
+import useTodos from '@/composables/useTodos'
 export default defineComponent({
-  name: "TodoListItem",
-  props: ['todoItem', 'removeTodo', 'modifyTodo'],
-  setup() {
-    return {}
+  name: 'TodoListItem',
+  props: ['todoItem'],
+  emits: ['changeState'],
+  setup(props, { emit }) {
+    const { removeTodoItem, modifyTodo, } = useTodos()
+
+    const changeState = (todoItem: any) => {
+      todoItem.completed = !todoItem.completed
+      modifyTodo(todoItem)
+    }
+
+    const clearTodoItem = (id: string) => {
+      if (!id) {
+        console.log('id is null')
+        return
+      }
+      removeTodoItem(id)
+    }
+
+    return {
+      clearTodoItem,
+      changeState,
+    }
   },
 })
 </script>

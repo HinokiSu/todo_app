@@ -1,13 +1,6 @@
 <template>
   <div class="todo-list">
-    <TodoListItem
-      v-for="todo in todos"
-      :key="todo._id"
-      :todoItem="todo"
-      @change-state="todo.completed = $event.target.checked"
-      :removeTodo="emitRemove"
-      :modifyTodo="emitModify"
-    />
+    <TodoListItem v-for="todo in todos" :key="todo._id" :todoItem="todo" />
   </div>
 </template>
 
@@ -19,18 +12,12 @@ export default defineComponent({
   name: 'TodoList',
   components: { TodoListItem },
   props: ['todos'],
-  emits: ['remove-todo', 'modify-todo'],
   setup(props, { emit }) {
-    const emitRemove = (id: any) => {
-      emit('remove-todo', id)
-    }
-
     const emitModify = (e: any, todo: any) => {
       todo.completed = e.target.checked
       emit('modify-todo', todo)
     }
     return {
-      emitRemove,
       emitModify,
     }
   },
