@@ -79,7 +79,7 @@ export default defineComponent({
       userInfo.username = ''
       userInfo.password = ''
 
-      router.push({name: 'home'})
+      router.push({name: 'todo'})
 
     }
     return {
