@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { submitTodo, getTodos, deleteTodo, updateTodo } from '@/api/index'
 
 interface todo {
@@ -7,12 +7,11 @@ interface todo {
   completed: boolean
 }
 
-
-/* 添加todo */
 export default function useTodos() {
-  const todos = ref([])
+  const todos = ref<todo[]>([])
 
   // 获取todos
+  // 待办： 根据uid查找所有todo
   const getTodoList = async () => {
     const res = await getTodos()
     todos.value = res.map((todo: todo) => ({
@@ -23,25 +22,32 @@ export default function useTodos() {
   }
 
   // 删除todo
-  const removeTodoItem = async (id: any) => {
-    await deleteTodo(id)
-    todos.value = await getTodos()
+  const removeTodoItem = async (id: string) => {
+    const res = await deleteTodo(id)
+    if (!res) {
+      console.log('删除todo失败')
+      return
+    }
   }
 
   // 添加todo
   const addTodo = async (todo: any) => {
     const res = await submitTodo(todo)
     if (!res) console.log('添加todo失败')
-    // 重新获取
-    getTodoList()
   }
 
   // 修改 todo
-  const modifyTodo = async (todo:any) => {
+  const modifyTodo = async (todo: any) => {
     const res = await updateTodo(todo)
     console.log(res)
   }
 
+  watch(
+    () => todos.value,
+    () => {
+      getTodoList()
+    }
+  )
 
   onMounted(() => {
     getTodoList()
@@ -51,6 +57,6 @@ export default function useTodos() {
     todos,
     addTodo,
     removeTodoItem,
-    modifyTodo
+    modifyTodo,
   }
 }

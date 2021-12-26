@@ -2,51 +2,52 @@ import request from '@/utils/request'
 
 // 提交
 const submitTodo: any = async (todo: any) => {
-  const retData = await request.http.post('/todo', todo)
-  if (retData.status !== 200) {
+  const { data: res } = await request.http.post('/todo', todo)
+  if (res.meta.status !== 200) {
     console.log('[axios]>> 提交todo 失败!')
     return null
   }
-  return 'success'
+  return res.meta.msg
 }
 
 // 获取todos
 const getTodos = async () => {
-  const retData = await request.http.get('/todo')
-  if (retData.status !== 200) {
+  const { data: res } = await request.http.get('/todo')
+  if (res.meta.status !== 200) {
     console.log('[axios]>> 获取todos 失败!')
     return
   }
-  return retData.data
+  return res.data
 }
 
 // 删除todo
-const deleteTodo = async (id: any) => {
-  const retData = await request.http.delete('/todo', {
-    data: {
-      _id: id,
+const deleteTodo = async (id: string) => {
+  const { data: res } = await request.http.delete('/todo', {
+    params: {
+      id,
     },
   })
-  if (retData.status !== 200) {
+  if (res.meta.status !== 200) {
     console.log('[axios]>> 删除todo 失败!')
     return
   }
-  return 'success'
+  
+  return res.meta.msg
 }
 
 // 修改 todo completed
 const updateTodo = async (todo: any) => {
-  const retData = await request.http.put('/todo', {
+  const { data: res } = await request.http.put('/todo', {
     data: {
-      todo
+      todo,
     },
   })
 
-  if (retData.status !== 200) {
+  if (res.meta.status !== 200) {
     console.log('[axios]>> 修改todo 失败!')
-    return null
+    return
   }
-  return 'success'
+  return res.meta.msg
 }
 
 export { submitTodo, getTodos, deleteTodo, updateTodo }
